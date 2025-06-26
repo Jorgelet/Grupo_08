@@ -9,7 +9,7 @@ public class ContactManager {
     public ContactManager() {
         contactos = new ListaCircularDoble<>();
     }
-
+    // Método para crear un nuevo contacto
     public void crearContacto(Scanner sc) {
         System.out.println("Tipo de contacto (Persona/Empresa): ");
         String tipo = sc.nextLine().trim();
@@ -38,18 +38,18 @@ public class ContactManager {
         }
 
         contactos.agregar(c);
-        System.out.println("✅ Contacto creado con éxito.");
+        System.out.println("Contacto creado con éxito.");
     }
-
+    // Métodos para listar los contactos
     public void listarContactos() {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos.");
             return;
         }
-        System.out.println("📋 Lista de contactos:");
+        System.out.println("Lista de contactos:");
         contactos.imprimir();
     }
-
+    // Método para ver los detalles de un contacto específico
     public void verDetallesContacto(Scanner sc) {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos.");
@@ -71,6 +71,36 @@ public class ContactManager {
         if (!encontrado) {
             System.out.println("Contacto no encontrado.");
         }
+    }
+    // Métodos para navegar por los contactos
+    public void verContactoSiguiente() {
+    if (contactos.estaVacia()) {
+        System.out.println("No hay contactos para mostrar.");
+        return;
+    }
+        var siguiente = contactos.next();
+        System.out.println("Contacto siguiente:");
+        siguiente.imprimirDetalles();
+    }
+    // Método para ver el contacto anterior
+    public void verContactoAnterior() {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos para mostrar.");
+            return;
+        }
+        var anterior = contactos.prev();
+        System.out.println("⬅️ Contacto anterior:");
+        anterior.imprimirDetalles();
+    }
+    // Método para ver el contacto actual
+    public void verContactoActual() {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos para mostrar.");
+            return;
+        }
+        var actual = contactos.getActual();
+        System.out.println("Contacto actual:");
+        actual.imprimirDetalles();
     }
 }
 
