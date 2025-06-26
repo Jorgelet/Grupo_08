@@ -67,7 +67,7 @@ public class ListaCircularDoble<T> {
     
     public void imprimir() {
         if (estaVacia()) {
-            System.out.println("Lista vacía.");
+            System.out.println("Lista vacia.");
             return;
         }
         Nodo<T> actual = cabeza;

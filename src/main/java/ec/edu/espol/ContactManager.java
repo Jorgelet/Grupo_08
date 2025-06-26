@@ -19,7 +19,7 @@ public class ContactManager {
 
         Contacto c = new Contacto(nombre, tipo);
 
-        System.out.println("¿Cuántos atributos quieres añadir?");
+        System.out.println("Cuantos atributos quieres anadir?");
         int n = Integer.parseInt(sc.nextLine());
         for (int i = 0; i < n; i++) {
             System.out.print("Nombre del atributo: ");
@@ -29,7 +29,7 @@ public class ContactManager {
             c.agregarAtributo(new Atributo(nombreA, valorA));
         }
 
-        System.out.println("¿Cuántas fotos quieres añadir?");
+        System.out.println("Cuantas fotos quieres anadir?");
         int f = Integer.parseInt(sc.nextLine());
         for (int i = 0; i < f; i++) {
             System.out.print("Nombre o ruta de la foto: ");
@@ -38,9 +38,9 @@ public class ContactManager {
         }
 
         contactos.agregar(c);
-        System.out.println("Contacto creado con éxito.");
+        System.out.println("Contacto creado con exito.");
     }
-    // Métodos para listar los contactos
+    // Metodos para listar los contactos
     public void listarContactos() {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos.");
@@ -49,7 +49,7 @@ public class ContactManager {
         System.out.println("Lista de contactos:");
         contactos.imprimir();
     }
-    // Método para ver los detalles de un contacto específico
+    // Metodo para ver los detalles de un contacto especifico
     public void verDetallesContacto(Scanner sc) {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos.");
@@ -72,7 +72,7 @@ public class ContactManager {
             System.out.println("Contacto no encontrado.");
         }
     }
-    // Métodos para navegar por los contactos
+    // Metodos para navegar por los contactos
     public void verContactoSiguiente() {
     if (contactos.estaVacia()) {
         System.out.println("No hay contactos para mostrar.");
@@ -82,17 +82,17 @@ public class ContactManager {
         System.out.println("Contacto siguiente:");
         siguiente.imprimirDetalles();
     }
-    // Método para ver el contacto anterior
+    // Metodo para ver el contacto anterior
     public void verContactoAnterior() {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos para mostrar.");
             return;
         }
         var anterior = contactos.prev();
-        System.out.println("⬅️ Contacto anterior:");
+        System.out.println("Contacto anterior:");
         anterior.imprimirDetalles();
     }
-    // Método para ver el contacto actual
+    // Metodo para ver el contacto actual
     public void verContactoActual() {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos para mostrar.");
