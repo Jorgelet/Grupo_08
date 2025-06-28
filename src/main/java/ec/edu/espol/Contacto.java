@@ -3,13 +3,17 @@ package ec.edu.espol;
 public class Contacto {
 
     private String nombre;
-    private String tipo;  
+    private String tipo;
+    private String numeroTelefono;
+    private String direccion;
     private ListaCircularDoble<Atributo> atributos;
     private ListaCircularDoble<Foto> fotos;
 
-    public Contacto(String nombre, String tipo) {
-        this.nombre = nombre;
+    public Contacto(String tipo, String nombre, String numeroTelefono, String direccion) {
         this.tipo = tipo;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.numeroTelefono = numeroTelefono;
         this.atributos = new ListaCircularDoble<>();
         this.fotos = new ListaCircularDoble<>();
     }
@@ -20,6 +24,14 @@ public class Contacto {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getNumeroTelefono() {
+        return numeroTelefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
     }
 
     public ListaCircularDoble<Atributo> getAtributos() {
