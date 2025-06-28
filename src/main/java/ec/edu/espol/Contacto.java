@@ -58,6 +58,8 @@ public class Contacto {
     public void imprimirDetalles() {
         System.out.println("Nombre: " + nombre);
         System.out.println("Tipo: " + tipo);
+        System.out.println("Número de Teléfono: " + numeroTelefono);
+        System.out.println("Dirección: " + direccion);
         System.out.println("Atributos:");
         atributos.imprimir();
         System.out.println("Fotos:");
