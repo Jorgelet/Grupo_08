@@ -8,7 +8,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opcion;
         do {
-            System.out.println("\n========= MENU DE GESTION DE CONTACTOS =========");
+            System.out.println("\n\033[0;31m========= MENU DE GESTION DE CONTACTOS =========\033[0m");
             System.out.println("1. Crear nuevo contacto");
             System.out.println("2. Ver lista completa de contactos");
             System.out.println("3. Ver contacto actual");
