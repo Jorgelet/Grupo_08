@@ -14,6 +14,7 @@ public class Main {
             System.out.println("3. Ver contacto actual");
             System.out.println("4. Ver contacto siguiente");
             System.out.println("5. Ver contacto anterior");
+            System.out.println("6. Ver detalles de un contacto");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opcion: ");
             try {
@@ -25,6 +26,7 @@ public class Main {
                     case 3 -> gestor.verContactoActual();
                     case 4 -> gestor.verContactoSiguiente();
                     case 5 -> gestor.verContactoAnterior();
+                    case 6 -> gestor.verDetallesContacto(sc);
                     case 0 -> System.out.println("Saliendo del programa...");
                     default -> System.out.println("Opcion invalida. Intente nuevamente.");
                 }
