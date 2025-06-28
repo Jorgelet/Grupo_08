@@ -53,7 +53,7 @@ public class ContactManager {
         int f = Integer.parseInt(sc.nextLine());
 
         while (f < 2) {
-            System.out.print("Debe agregar al menos 2 fotos. Ing ");
+            System.out.print("Debe agregar al menos 2 fotos. Ingrese una cantidad valida: ");
             f = Integer.parseInt(sc.nextLine());
         }
 

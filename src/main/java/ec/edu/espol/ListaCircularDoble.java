@@ -53,12 +53,12 @@ public class ListaCircularDoble<T> {
         return cabeza;
     }
 
-    // Método para establecer el nodo actual al inicio de la lista
+    // Método para obtener el nodo actual
     public T getActual() {
         return nodoActual != null ? nodoActual.dato : null;
     }
 
-    // Método para establecer el nodo actual al inicio de la lista
+    // Método para establecer el nodo actual al nodo siguiente
     public T next() {
         if (estaVacia())
             return null;
@@ -68,7 +68,7 @@ public class ListaCircularDoble<T> {
         return nodoActual.dato;
     }
 
-    // Método para establecer el nodo actual al final de la lista
+    // Método para establecer el nodo actual al nodo anterior
     public T prev() {
         if (estaVacia())
             return null;
