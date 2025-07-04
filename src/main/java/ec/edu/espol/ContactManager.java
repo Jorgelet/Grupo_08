@@ -420,16 +420,25 @@ public class ContactManager {
         }
         System.out.print("Ingrese el primer nombre a buscar: ");
         String primerNombre = sc.nextLine().trim().toLowerCase();
-        System.out.print("Ingrese el apellido a buscar: ");
+        System.out.print("Ingrese el apellido a buscar (deje vacio si es empresa): ");
         String apellido = sc.nextLine().trim().toLowerCase();
 
         boolean encontrado = false;
         for (Contacto c : contactos) {
-            String[] partes = c.getNombre().trim().toLowerCase().split("\\s+");
-            if (partes.length >= 2) {
-                if (partes[0].equals(primerNombre) && partes[partes.length - 1].equals(apellido)) {
+            if (c.getTipo().equalsIgnoreCase("Empresa")) {
+                // Para empresa, solo compara el nombre completo
+                if (c.getNombre().trim().toLowerCase().equals(primerNombre)) {
                     c.imprimirDetalles();
                     encontrado = true;
+                }
+            } else {
+                // Para persona, compara primer nombre y apellido
+                String[] partes = c.getNombre().trim().toLowerCase().split("\\s+");
+                if (partes.length >= 2) {
+                    if (partes[0].equals(primerNombre) && partes[partes.length - 1].equals(apellido)) {
+                        c.imprimirDetalles();
+                        encontrado = true;
+                    }
                 }
             }
         }
