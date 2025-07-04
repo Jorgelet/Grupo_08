@@ -412,6 +412,7 @@ public class ContactManager {
             System.out.println("Atributo no encontrado.");
         }
     }
+
     // Filtrar por apellido y primer nombre
     public void filtrarPorNombreApellido(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -446,6 +447,7 @@ public class ContactManager {
             System.out.println("No se encontraron contactos con ese nombre y apellido.");
         }
     }
+
     // Filtrar por cantidad de atributos
     public void filtrarPorCantidadAtributos(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -465,6 +467,7 @@ public class ContactManager {
             System.out.println("No se encontraron contactos con esa cantidad de atributos.");
         }
     }
+
     // Filtrar por tipo de contacto
     public void filtrarPorTipoContacto(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -484,6 +487,7 @@ public class ContactManager {
             System.out.println("No se encontraron contactos de ese tipo.");
         }
     }
+
     // Método para ver las fotos de un contacto
     public void verFotosDeContacto(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -537,6 +541,7 @@ public class ContactManager {
             }
         } while (opcion != 0);
     }
+
     // Método para asociar contactos
     public void asociarContactos(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -572,6 +577,7 @@ public class ContactManager {
         c1.agregarAsociado(c2);
         System.out.println("Contactos asociados exitosamente.");
     }
+
     // Método para ver los contactos asociados a un contacto específico
     public void verContactosAsociados(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -613,6 +619,86 @@ public class ContactManager {
                 }
                 idx++;
             }
+        }
+    }
+
+    // Método para Búsqueda Avanzada con múltiples criterios
+    public void busquedaAvanzada(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos para buscar.");
+            return;
+        }
+
+        System.out.println("\n--- Búsqueda Avanzada ---");
+        System.out.println("Deje en blanco los campos opcionales que no desee usar como filtro.");
+
+        System.out.print("Filtrar por Nombre (obligatorio): ");
+        String nombreFiltro = sc.nextLine().trim().toLowerCase();
+
+        System.out.print("Filtrar por Apellido (obligatorio): ");
+        String apellidoFiltro = sc.nextLine().trim().toLowerCase();
+
+        System.out.print("Filtrar por Dirección (obligatorio): ");
+        String direccionFiltro = sc.nextLine().trim().toLowerCase();
+
+        System.out.print("Filtrar por Nombre de Atributo específico: (opcional)");
+        String nombreAtributoFiltro = sc.nextLine().trim().toLowerCase();
+        String valorAtributoFiltro = "";
+        if (!nombreAtributoFiltro.isEmpty()) {
+            System.out.print("Valor del Atributo '" + nombreAtributoFiltro + "' (obligatorio): ");
+            valorAtributoFiltro = sc.nextLine().trim().toLowerCase();
+        }
+
+        System.out.println("\n--- Resultados de la Búsqueda ---");
+        boolean encontrado = false;
+
+        for (Contacto c : contactos) {
+            // Asumimos que el contacto si es un resultado válido
+            // Luego vamos descartando si no cumple con los filtros
+            boolean cumple = true;
+
+            // 1. Chequeo de Nombre
+            if (cumple && !nombreFiltro.isEmpty() && !c.getNombre().toLowerCase().contains(nombreFiltro)) {
+                cumple = false;
+            }
+
+            // 2. Chequeo de Apellido
+            if (cumple && !apellidoFiltro.isEmpty()) {
+                if (c.getApellido() == null || !c.getApellido().toLowerCase().contains(apellidoFiltro)) {
+                    cumple = false;
+                }
+            }
+
+            // 3. Chequeo de Dirección
+            if (cumple && !direccionFiltro.isEmpty() && !c.getDireccion().toLowerCase().contains(direccionFiltro)) {
+                cumple = false;
+            }
+
+            // 4. Chequeo de Atributo
+            if (cumple && !nombreAtributoFiltro.isEmpty()) {
+                boolean atributoEncontrado = false;
+                for (Atributo a : c.getAtributos()) {
+                    if (a.getNombre().toLowerCase().equals(nombreAtributoFiltro)
+                            && a.getValor().toLowerCase().contains(valorAtributoFiltro)) {
+                        atributoEncontrado = true;
+                        break;
+                    }
+                }
+                if (!atributoEncontrado) {
+                    cumple = false; // Si no se encontró el atributo con ese valor, lo descartamos
+                }
+            }
+
+            // Si el contacto pasó todos los filtros, lo mostramos
+            if (cumple) {
+                c.imprimirDetalles();
+                System.out.println("---------------------------------");
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos que coincidan con todos los criterios especificados.");
         }
     }
 }
