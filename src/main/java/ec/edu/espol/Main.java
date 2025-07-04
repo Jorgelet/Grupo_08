@@ -26,6 +26,8 @@ public class Main {
             System.out.println("15. Filtrar por tipo de contacto");
             System.out.println("16. Ver fotos de un contacto");
             System.out.println("17. Ordenar contactos");
+            System.out.println("18. Asociar contactos");
+            System.out.println("19. Ver contactos asociados");
             System.out.println("\n\033[0;31m0. Salir\033[0m");
             System.out.print("Seleccione una opcion: ");
             try {
@@ -49,6 +51,8 @@ public class Main {
                     case 15 -> gestor.filtrarPorTipoContacto(sc);
                     case 16 -> gestor.verFotosDeContacto(sc);
                     case 17 -> gestor.ordenarContactos(sc);
+                    case 18 -> gestor.asociarContactos(sc);
+                    case 19 -> gestor.verContactosAsociados(sc);
                     case 0 -> {
                         // Guardar automáticamente al salir
                         gestor.guardarContactos();

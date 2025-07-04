@@ -446,7 +446,7 @@ public class ContactManager {
             System.out.println("No se encontraron contactos con ese nombre y apellido.");
         }
     }
-        // Filtrar por cantidad de atributos
+    // Filtrar por cantidad de atributos
     public void filtrarPorCantidadAtributos(Scanner sc) {
         if (contactos.estaVacia()) {
             System.out.println("No hay contactos.");
@@ -536,5 +536,83 @@ public class ContactManager {
                     System.out.println("Opcion invalida.");
             }
         } while (opcion != 0);
+    }
+    // Método para asociar contactos
+    public void asociarContactos(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto principal: ");
+        String nombre1 = sc.nextLine();
+        Contacto c1 = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre1)) {
+                c1 = c;
+                break;
+            }
+        }
+        if (c1 == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        System.out.print("Nombre del contacto a asociar: ");
+        String nombre2 = sc.nextLine();
+        Contacto c2 = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre2)) {
+                c2 = c;
+                break;
+            }
+        }
+        if (c2 == null) {
+            System.out.println("Contacto a asociar no encontrado.");
+            return;
+        }
+        c1.agregarAsociado(c2);
+        System.out.println("Contactos asociados exitosamente.");
+    }
+    // Método para ver los contactos asociados a un contacto específico
+    public void verContactosAsociados(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto c = null;
+        for (Contacto con : contactos) {
+            if (con.getNombre().equalsIgnoreCase(nombre)) {
+                c = con;
+                break;
+            }
+        }
+        if (c == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        ListaCircularDoble<Contacto> asociados = c.getAsociados();
+        if (asociados.estaVacia()) {
+            System.out.println("Este contacto no tiene asociados.");
+            return;
+        }
+        System.out.println("Contactos asociados:");
+        int i = 1;
+        for (Contacto a : asociados) {
+            System.out.println(i + ". " + a.getNombre() + " " + a.getApellido());
+            i++;
+        }
+        System.out.print("Seleccione el número de un contacto asociado para ver detalles (0 para salir): ");
+        int opcion = Integer.parseInt(sc.nextLine());
+        if (opcion > 0 && opcion <= asociados.getTamaño()) {
+            int idx = 1;
+            for (Contacto a : asociados) {
+                if (idx == opcion) {
+                    a.imprimirDetalles();
+                    break;
+                }
+                idx++;
+            }
+        }
     }
 }

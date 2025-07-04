@@ -11,6 +11,7 @@ public class Contacto {
     private String direccion;
     private ListaCircularDoble<Atributo> atributos;
     private ListaCircularDoble<Foto> fotos;
+    private ListaCircularDoble<Contacto> asociados = new ListaCircularDoble<>();
 
     public Contacto(String tipo, String nombre, String apellido, String numeroTelefono, String direccion) {
         this.tipo = tipo;
@@ -50,6 +51,10 @@ public class Contacto {
         return fotos;
     }
 
+    public ListaCircularDoble<Contacto> getAsociados() {
+        return asociados;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -72,6 +77,20 @@ public class Contacto {
 
     public void agregarFoto(Foto f) {
         fotos.agregar(f);
+    }
+
+    private boolean asociadosContiene(Contacto c) {
+        for (Contacto a : asociados) {
+            if (a.equals(c))
+                return true;
+        }
+        return false;
+    }
+
+    public void agregarAsociado(Contacto c) {
+        if (c != null && !this.equals(c) && !asociadosContiene(c)) {
+            asociados.agregar(c);
+        }
     }
 
     @Override
@@ -103,5 +122,9 @@ public class Contacto {
         atributos.imprimir();
         System.out.println("Fotos:");
         fotos.imprimir();
+        System.out.println("Contactos asociados:");
+        for (Contacto a : asociados) {
+            System.out.println(" - " + a.getNombre() + " " + a.getApellido());
+        }
     }
 }

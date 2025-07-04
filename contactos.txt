@@ -1,0 +1,10 @@
+CONTACTO|persona|el pepe|ete|123|e1e
+ATRIBUTO|as|as
+FOTO|as
+FOTO|as
+---
+CONTACTO|persona|ete sech|as|1234|zds
+ATRIBUTO|as|as
+FOTO|as
+FOTO|as
+---
