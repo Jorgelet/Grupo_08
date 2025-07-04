@@ -202,4 +202,77 @@ public class ContactManager {
         contactos = new ListaCircularDoble<>(); // Limpiar lista actual
         PersistenciaContactos.cargarContactos(contactos);
     }
+
+    // Editar un atributo de un contacto
+    public void editarAtributoContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto contacto = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                contacto = c;
+                break;
+            }
+        }
+        if (contacto == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        System.out.print("Nombre del atributo a editar: ");
+        String nombreAtributo = sc.nextLine();
+        boolean encontrado = false;
+        for (Atributo a : contacto.getAtributos()) {
+            if (a.getNombre().equalsIgnoreCase(nombreAtributo)) {
+                System.out.print("Nuevo valor: ");
+                String nuevoValor = sc.nextLine();
+                a.setValor(nuevoValor);
+                System.out.println("Atributo editado con exito.");
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("Atributo no encontrado.");
+        }
+    }
+
+    // Remover un atributo de un contacto
+    public void removerAtributoContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto contacto = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                contacto = c;
+                break;
+            }
+        }
+        if (contacto == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        System.out.print("Nombre del atributo a remover: ");
+        String nombreAtributo = sc.nextLine();
+        Atributo atributoAEliminar = null;
+        for (Atributo a : contacto.getAtributos()) {
+            if (a.getNombre().equalsIgnoreCase(nombreAtributo)) {
+                atributoAEliminar = a;
+                break;
+            }
+        }
+        if (atributoAEliminar != null) {
+            contacto.getAtributos().eliminar(atributoAEliminar);
+            System.out.println("Atributo eliminado con exito.");
+        } else {
+            System.out.println("Atributo no encontrado.");
+        }
+    }
 }
