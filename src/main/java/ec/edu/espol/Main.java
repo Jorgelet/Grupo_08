@@ -20,6 +20,7 @@ public class Main {
             System.out.println("9. Eliminar un contacto");
             System.out.println("10. Editar atributo de un contacto");
             System.out.println("11. Remover atributo de un contacto");
+            System.out.println("12. Editar un contacto");
             System.out.println("\n\033[0;31m0. Salir\033[0m");
             System.out.print("Seleccione una opcion: ");
             try {
@@ -37,6 +38,7 @@ public class Main {
                     case 9 -> gestor.eliminarContacto(sc);
                     case 10 -> gestor.editarAtributoContacto(sc);
                     case 11 -> gestor.removerAtributoContacto(sc);
+                    case 12 -> gestor.editarContacto(sc);
                     case 0 -> {
                         // Guardar automáticamente al salir
                         gestor.guardarContactos();
