@@ -411,4 +411,57 @@ public class ContactManager {
             System.out.println("No se encontraron contactos de ese tipo.");
         }
     }
+    // Método para ver las fotos de un contacto
+    public void verFotosDeContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto contacto = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                contacto = c;
+                break;
+            }
+        }
+        if (contacto == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        ListaCircularDoble<Foto> fotos = contacto.getFotos();
+        if (fotos.estaVacia() || fotos.getTamaño() < 2) {
+            System.out.println("El contacto debe tener al menos 2 fotos.");
+            return;
+        }
+
+        ListaCircularDoble.Nodo<Foto> actual = fotos.getCabeza();
+        int opcion;
+        do {
+            System.out.println("\nFoto actual: " + actual.dato.getNombreArchivo());
+            System.out.println("1. Ver foto siguiente");
+            System.out.println("2. Ver foto anterior");
+            System.out.println("0. Salir de la galeria de fotos");
+            System.out.print("Seleccione una opcion: ");
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                opcion = -1;
+            }
+            switch (opcion) {
+                case 1:
+                    actual = actual.siguiente;
+                    break;
+                case 2:
+                    actual = actual.anterior;
+                    break;
+                case 0:
+                    System.out.println("Saliendo de la galeria de fotos.");
+                    break;
+                default:
+                    System.out.println("Opcion invalida.");
+            }
+        } while (opcion != 0);
+    }
 }

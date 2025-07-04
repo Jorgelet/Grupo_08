@@ -1,0 +1,7 @@
+CONTACTO|persona|juan diego|1234|cc
+ATRIBUTO|u|espo
+ATRIBUTO|c|iphone
+ATRIBUTO|p|si
+FOTO|foto1
+FOTO|foto2
+---
