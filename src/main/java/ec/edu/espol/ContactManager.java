@@ -348,4 +348,30 @@ public class ContactManager {
             System.out.println("Atributo no encontrado.");
         }
     }
+
+    // Filtrar por apellido y primer nombre
+    public void filtrarPorNombreApellido(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Ingrese el primer nombre a buscar: ");
+        String primerNombre = sc.nextLine().trim().toLowerCase();
+        System.out.print("Ingrese el apellido a buscar: ");
+        String apellido = sc.nextLine().trim().toLowerCase();
+
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            String[] partes = c.getNombre().trim().toLowerCase().split("\\s+");
+            if (partes.length >= 2) {
+                if (partes[0].equals(primerNombre) && partes[partes.length - 1].equals(apellido)) {
+                    c.imprimirDetalles();
+                    encontrado = true;
+                }
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos con ese nombre y apellido.");
+        }
+    }
 }
