@@ -17,6 +17,7 @@ public class Main {
             System.out.println("6. Ver detalles de un contacto");
             System.out.println("7. Guardar contactos");
             System.out.println("8. Cargar contactos");
+            System.out.println("9. Eliminar un contacto");
             System.out.println("\n\033[0;31m0. Salir\033[0m");
             System.out.print("Seleccione una opcion: ");
             try {
@@ -31,6 +32,7 @@ public class Main {
                     case 6 -> gestor.verDetallesContacto(sc);
                     case 7 -> gestor.guardarContactos();
                     case 8 -> gestor.cargarContactos();
+                    case 9 -> gestor.eliminarContacto(sc);
                     case 0 -> {
                         // Guardar automáticamente al salir
                         gestor.guardarContactos();

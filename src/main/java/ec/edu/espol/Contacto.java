@@ -1,5 +1,7 @@
 package ec.edu.espol;
 
+import java.util.Objects;
+
 public class Contacto {
 
     private String nombre;
@@ -48,6 +50,21 @@ public class Contacto {
 
     public void agregarFoto(Foto f) {
         fotos.agregar(f);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Contacto contacto = (Contacto) o;
+        return Objects.equals(numeroTelefono.toLowerCase(), contacto.numeroTelefono.toLowerCase());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numeroTelefono.toLowerCase());
     }
 
     @Override

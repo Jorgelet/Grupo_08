@@ -95,26 +95,41 @@ public class ListaCircularDoble<T> implements Iterable<T> {
 
     // Eliminar un nodo que contiene cierto dato
     public boolean eliminar(T dato) {
-        if (estaVacia())
+        if (estaVacia()) {
             return false;
+        }
+
         Nodo<T> actual = cabeza;
         do {
             if (actual.dato.equals(dato)) {
+                // Si el nodo a eliminar es el que usamos para navegar,
+                // lo movemos al siguiente para evitar errores.
+                if (actual == nodoActual) {
+                    nodoActual = actual.siguiente;
+                }
+
                 if (tamaño == 1) {
                     cabeza = null;
+                    nodoActual = null; // La lista queda vacía
                 } else {
                     actual.anterior.siguiente = actual.siguiente;
                     actual.siguiente.anterior = actual.anterior;
                     if (actual == cabeza) {
                         cabeza = actual.siguiente;
                     }
+                    // Si después de eliminar, el nodo actual apunta al nodo eliminado
+                    // (porque era el único elemento), lo ponemos a null.
+                    if (nodoActual == actual) {
+                        nodoActual = cabeza;
+                    }
                 }
                 tamaño--;
-                return true;
+                return true; // Se eliminó con éxito
             }
             actual = actual.siguiente;
         } while (actual != cabeza);
-        return false;
+
+        return false; // No se encontró el dato
     }
 
     @Override
