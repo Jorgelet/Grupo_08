@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class PersistenciaContactos {
-    private static final String ARCHIVO_CONTACTOS = System.getProperty("user.dir") + File.separator + "contactos.txt";
+    private static final String ARCHIVO_CONTACTOS = "contactos.txt";
 
     // Guardar todos los contactos en el archivo
     public static void guardarContactos(ListaCircularDoble<Contacto> contactos) {
