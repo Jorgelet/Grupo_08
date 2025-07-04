@@ -159,6 +159,79 @@ public class ContactManager {
         }
     }
 
+    // Método para editar un contacto existente
+    public void editarContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos para editar.");
+            return;
+        }
+
+        System.out.print("Ingrese el número de teléfono del contacto a editar: ");
+        String numeroBusqueda = sc.nextLine();
+
+        Contacto contactoAEditar = null;
+        for (Contacto c : contactos) {
+            if (c.getNumeroTelefono().equalsIgnoreCase(numeroBusqueda)) {
+                contactoAEditar = c;
+                break;
+            }
+        }
+
+        if (contactoAEditar == null) {
+            System.out.println("No se encontró ningún contacto con ese número de teléfono.");
+            return;
+        }
+
+        int opcion;
+        do {
+            System.out.println("\n--- Editando a: " + contactoAEditar.getNombre() + " ---");
+            contactoAEditar.imprimirDetalles();
+            System.out.println("\n¿Qué desea editar?");
+            System.out.println("1. Nombre");
+            System.out.println("2. Número de teléfono");
+            System.out.println("3. Dirección");
+            System.out.println("0. Volver al menú principal");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = Integer.parseInt(sc.nextLine());
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nuevo nombre: ");
+                    String nuevoNombre = sc.nextLine();
+                    contactoAEditar.setNombre(nuevoNombre);
+                    System.out.println("Nombre actualizado con éxito.");
+                    break;
+                case 2:
+                    System.out.print("Nuevo número de teléfono: ");
+                    String nuevoNumero = sc.nextLine();
+                    if (existeNumeroTelefono(nuevoNumero)) {
+                        System.out.println("Error: Ese número ya pertenece a otro contacto.");
+                    } else {
+                        contactoAEditar.setNumeroTelefono(nuevoNumero);
+                        System.out.println("Número de teléfono actualizado con éxito.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Nueva dirección: ");
+                    String nuevaDireccion = sc.nextLine();
+                    contactoAEditar.setDireccion(nuevaDireccion);
+                    System.out.println("Dirección actualizada con éxito.");
+                    break;
+                case 0:
+                    System.out.println("Finalizando edición.");
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
+            if (opcion >= 1 && opcion <= 3) {
+                PersistenciaContactos.guardarContactos(contactos);
+            }
+
+        } while (opcion != 0);
+    }
+
     // Metodos para navegar por los contactos
     public void verContactoSiguiente() {
         if (contactos.estaVacia()) {

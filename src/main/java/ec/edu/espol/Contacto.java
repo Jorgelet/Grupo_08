@@ -44,6 +44,18 @@ public class Contacto {
         return fotos;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     public void agregarAtributo(Atributo a) {
         atributos.agregar(a);
     }
