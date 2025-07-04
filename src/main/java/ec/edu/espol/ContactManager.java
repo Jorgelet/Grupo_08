@@ -7,6 +7,8 @@ public class ContactManager {
 
     public ContactManager() {
         contactos = new ListaCircularDoble<>();
+        // Cargar contactos existentes al iniciar
+        PersistenciaContactos.cargarContactos(contactos);
     }
 
     // Método para crear un nuevo contacto
@@ -65,6 +67,9 @@ public class ContactManager {
 
         contactos.agregar(c);
         System.out.println("Contacto creado con exito.");
+
+        // Guardar automáticamente después de crear un contacto
+        PersistenciaContactos.guardarContactos(contactos);
     }
 
     // Metodos para listar los contactos
@@ -132,5 +137,16 @@ public class ContactManager {
         var actual = contactos.getActual();
         System.out.println("Contacto actual:");
         actual.imprimirDetalles();
+    }
+
+    // Método para guardar contactos manualmente
+    public void guardarContactos() {
+        PersistenciaContactos.guardarContactos(contactos);
+    }
+
+    // Método para cargar contactos manualmente
+    public void cargarContactos() {
+        contactos = new ListaCircularDoble<>(); // Limpiar lista actual
+        PersistenciaContactos.cargarContactos(contactos);
     }
 }

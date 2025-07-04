@@ -15,6 +15,8 @@ public class Main {
             System.out.println("4. Ver contacto siguiente");
             System.out.println("5. Ver contacto anterior");
             System.out.println("6. Ver detalles de un contacto");
+            System.out.println("\033[0;36m7. Guardar contactos\033[0m");
+            System.out.println("\033[0;36m8. Cargar contactos\033[0m");
             System.out.println("0. Salir");
             System.out.print("Seleccione una opcion: ");
             try {
@@ -27,7 +29,13 @@ public class Main {
                     case 4 -> gestor.verContactoSiguiente();
                     case 5 -> gestor.verContactoAnterior();
                     case 6 -> gestor.verDetallesContacto(sc);
-                    case 0 -> System.out.println("Saliendo del programa...");
+                    case 7 -> gestor.guardarContactos();
+                    case 8 -> gestor.cargarContactos();
+                    case 0 -> {
+                        // Guardar automáticamente al salir
+                        gestor.guardarContactos();
+                        System.out.println("Saliendo del programa...");
+                    }
                     default -> System.out.println("Opcion invalida. Intente nuevamente.");
                 }
             } catch (NumberFormatException e) {
