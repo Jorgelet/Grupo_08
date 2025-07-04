@@ -15,9 +15,9 @@ public class Main {
             System.out.println("4. Ver contacto siguiente");
             System.out.println("5. Ver contacto anterior");
             System.out.println("6. Ver detalles de un contacto");
-            System.out.println("\033[0;36m7. Guardar contactos\033[0m");
-            System.out.println("\033[0;36m8. Cargar contactos\033[0m");
-            System.out.println("0. Salir");
+            System.out.println("7. Guardar contactos");
+            System.out.println("8. Cargar contactos");
+            System.out.println("\n\033[0;31m0. Salir\033[0m");
             System.out.print("Seleccione una opcion: ");
             try {
                 opcion = Integer.parseInt(sc.nextLine());
