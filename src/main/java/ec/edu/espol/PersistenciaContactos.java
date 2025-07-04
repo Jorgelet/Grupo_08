@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class PersistenciaContactos {
@@ -24,6 +26,10 @@ public class PersistenciaContactos {
                     writer.println("FOTO|" + f.getNombreArchivo());
                 }
 
+                for (Contacto asociado : c.getAsociados()) {
+                    writer.println("ASOCIADO|" + asociado.getNumeroTelefono());
+                }
+
                 writer.println("---");
             }
 
@@ -41,26 +47,22 @@ public class PersistenciaContactos {
             return;
         }
 
+        Map<String, ListaCircularDoble<String>> mapaAsociaciones = new HashMap<>();
+
         try (Scanner scanner = new Scanner(archivo)) {
             Contacto contactoActual = null;
             int contactosCargados = 0;
 
-            // Leemos el archivo línea por línea hasta el final.
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
-
-                // Ignoramos líneas vacías o los separadores.
-                if (linea.isEmpty() || linea.equals("---")) {
+                if (linea.isEmpty() || linea.equals("---"))
                     continue;
-                }
 
-                // Dividimos la línea por el carácter '|' para obtener los datos.
                 String[] partes = linea.split("\\|");
                 String tipoDato = partes[0];
 
                 switch (tipoDato) {
                     case "CONTACTO":
-                        // Creamos un nuevo objeto Contacto.
                         String tipo = partes[1];
                         String nombre = partes[2];
                         String apellido = partes[3];
@@ -68,25 +70,40 @@ public class PersistenciaContactos {
                         String direccion = partes[5];
                         contactoActual = new Contacto(tipo, nombre, apellido, telefono, direccion);
                         contactos.agregar(contactoActual);
+                        mapaAsociaciones.put(telefono, new ListaCircularDoble<>());
                         contactosCargados++;
                         break;
 
                     case "ATRIBUTO":
-                        // Agregamos un atributo al último contacto que creamos.
                         if (contactoActual != null) {
-                            String nombreAtributo = partes[1];
-                            String valorAtributo = partes[2];
-                            contactoActual.agregarAtributo(new Atributo(nombreAtributo, valorAtributo));
+                            contactoActual.agregarAtributo(new Atributo(partes[1], partes[2]));
                         }
                         break;
 
                     case "FOTO":
-                        // Agregamos una foto al último contacto que creamos.
                         if (contactoActual != null) {
-                            String nombreFoto = partes[1];
-                            contactoActual.agregarFoto(new Foto(nombreFoto));
+                            contactoActual.agregarFoto(new Foto(partes[1]));
                         }
                         break;
+
+                    case "ASOCIADO":
+                        if (contactoActual != null) {
+                            String telefonoAsociado = partes[1];
+                            mapaAsociaciones.get(contactoActual.getNumeroTelefono()).agregar(telefonoAsociado);
+                        }
+                        break;
+                }
+            }
+
+            for (Map.Entry<String, ListaCircularDoble<String>> entry : mapaAsociaciones.entrySet()) {
+                Contacto contactoOrigen = buscarPorTelefono(contactos, entry.getKey());
+                if (contactoOrigen != null) {
+                    for (String telefonoDestino : entry.getValue()) {
+                        Contacto contactoDestino = buscarPorTelefono(contactos, telefonoDestino);
+                        if (contactoDestino != null) {
+                            contactoOrigen.agregarAsociado(contactoDestino);
+                        }
+                    }
                 }
             }
 
@@ -97,5 +114,14 @@ public class PersistenciaContactos {
         } catch (IOException e) {
             System.out.println("\033[0;31mError al cargar contactos: " + e.getMessage() + "\033[0m");
         }
+    }
+
+    private static Contacto buscarPorTelefono(ListaCircularDoble<Contacto> contactos, String telefono) {
+        for (Contacto c : contactos) {
+            if (c.getNumeroTelefono().equals(telefono)) {
+                return c;
+            }
+        }
+        return null;
     }
 }
