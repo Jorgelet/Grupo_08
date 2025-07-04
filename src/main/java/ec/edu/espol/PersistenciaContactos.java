@@ -10,7 +10,7 @@ public class PersistenciaContactos {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ARCHIVO_CONTACTOS))) {
 
             for (Contacto c : contactos) {
-                writer.println("CONTACTO|" + c.getTipo() + "|" + c.getNombre() + "|" +
+                writer.println("CONTACTO|" + c.getTipo() + "|" + c.getNombre() + "|" + c.getApellido() + "|" +
                         c.getNumeroTelefono() + "|" + c.getDireccion());
 
                 for (Atributo a : c.getAtributos()) {
@@ -60,9 +60,10 @@ public class PersistenciaContactos {
                         // Creamos un nuevo objeto Contacto.
                         String tipo = partes[1];
                         String nombre = partes[2];
-                        String telefono = partes[3];
-                        String direccion = partes[4];
-                        contactoActual = new Contacto(tipo, nombre, telefono, direccion);
+                        String apellido = partes[3];
+                        String telefono = partes[4];
+                        String direccion = partes[5];
+                        contactoActual = new Contacto(tipo, nombre, apellido, telefono, direccion);
                         contactos.agregar(contactoActual);
                         contactosCargados++;
                         break;

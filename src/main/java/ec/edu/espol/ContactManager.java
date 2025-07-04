@@ -1,5 +1,7 @@
 package ec.edu.espol;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class ContactManager {
@@ -24,6 +26,14 @@ public class ContactManager {
         System.out.print("Nombre: ");
         String nombre = sc.nextLine().trim();
 
+        String apellido = "";
+        // Si es una persona, solicitamos el apellido
+        // Ya que una empresa puede no tener apellido
+        if (tipo.equalsIgnoreCase("Persona")) {
+            System.out.print("Apellido: ");
+            apellido = sc.nextLine().trim();
+        }
+
         String numeroTelefono;
         boolean numeroValido;
         do {
@@ -45,7 +55,7 @@ public class ContactManager {
         System.out.print("Direccion: ");
         String direccion = sc.nextLine().trim();
 
-        Contacto c = new Contacto(tipo, nombre, numeroTelefono, direccion);
+        Contacto c = new Contacto(tipo, nombre, apellido, numeroTelefono, direccion);
 
         System.out.print("Cuantos atributos mas desea añadir? ");
         int n = Integer.parseInt(sc.nextLine());
@@ -230,6 +240,60 @@ public class ContactManager {
             }
 
         } while (opcion != 0);
+    }
+
+    // Método para ordenar la lista de contactos
+    public void ordenarContactos(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos para ordenar.");
+            return;
+        }
+
+        System.out.println("\n--- Criterios de Ordenación ---");
+        System.out.println("1. Por Apellido y Nombre");
+        System.out.println("2. Por Cantidad de Atributos");
+        System.out.println("3. Por Tipo de Contacto (Persona/Empresa)");
+        System.out.print("Seleccione una opción: ");
+        int opcion = Integer.parseInt(sc.nextLine());
+
+        Comparator<Contacto> comparador = null;
+        switch (opcion) {
+            case 1:
+                // Ordena por apellido, luego por nombre. Las empresas van al final debido a que
+                // pueden no tener apellido
+                comparador = Comparator.comparing(Contacto::getTipo).reversed()
+                        .thenComparing(Contacto::getApellido, String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(Contacto::getNombre, String.CASE_INSENSITIVE_ORDER);
+                break;
+            case 2:
+                // Ordena por número de atributos, de mayor a menor.
+                comparador = Comparator.comparingInt((Contacto c) -> c.getAtributos().getTamaño()).reversed();
+                break;
+            case 3:
+                // Ordena por tipo (Empresa primero, luego Persona).
+                comparador = Comparator.comparing(Contacto::getTipo);
+                break;
+            default:
+                System.out.println("Opción no válida.");
+                return;
+        }
+
+        PriorityQueue<Contacto> colaPrioridad = new PriorityQueue<>(comparador);
+
+        for (Contacto c : this.contactos) {
+            colaPrioridad.add(c);
+        }
+
+        ListaCircularDoble<Contacto> listaOrdenada = new ListaCircularDoble<>();
+
+        while (!colaPrioridad.isEmpty()) {
+            listaOrdenada.agregar(colaPrioridad.poll());
+        }
+
+        this.contactos = listaOrdenada;
+
+        System.out.println("Contactos ordenados con éxito. Puede ver el resultado en 'Ver lista completa'.");
+        PersistenciaContactos.guardarContactos(contactos);
     }
 
     // Metodos para navegar por los contactos

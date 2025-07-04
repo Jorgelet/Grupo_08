@@ -5,15 +5,17 @@ import java.util.Objects;
 public class Contacto {
 
     private String nombre;
+    private String apellido;
     private String tipo;
     private String numeroTelefono;
     private String direccion;
     private ListaCircularDoble<Atributo> atributos;
     private ListaCircularDoble<Foto> fotos;
 
-    public Contacto(String tipo, String nombre, String numeroTelefono, String direccion) {
+    public Contacto(String tipo, String nombre, String apellido, String numeroTelefono, String direccion) {
         this.tipo = tipo;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.direccion = direccion;
         this.numeroTelefono = numeroTelefono;
         this.atributos = new ListaCircularDoble<>();
@@ -22,6 +24,10 @@ public class Contacto {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
     }
 
     public String getTipo() {
@@ -46,6 +52,10 @@ public class Contacto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public void setNumeroTelefono(String numeroTelefono) {
@@ -85,7 +95,7 @@ public class Contacto {
     }
 
     public void imprimirDetalles() {
-        System.out.println("Nombre: " + nombre);
+        System.out.println("Nombre: " + nombre + " " + apellido);
         System.out.println("Tipo: " + tipo);
         System.out.println("Número de Teléfono: " + numeroTelefono);
         System.out.println("Dirección: " + direccion);
