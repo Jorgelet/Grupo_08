@@ -348,7 +348,6 @@ public class ContactManager {
             System.out.println("Atributo no encontrado.");
         }
     }
-
     // Filtrar por apellido y primer nombre
     public void filtrarPorNombreApellido(Scanner sc) {
         if (contactos.estaVacia()) {
@@ -372,6 +371,44 @@ public class ContactManager {
         }
         if (!encontrado) {
             System.out.println("No se encontraron contactos con ese nombre y apellido.");
+        }
+    }
+        // Filtrar por cantidad de atributos
+    public void filtrarPorCantidadAtributos(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Ingrese la cantidad de atributos: ");
+        int cantidad = Integer.parseInt(sc.nextLine());
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            if (c.getAtributos().getTamaño() == cantidad) {
+                c.imprimirDetalles();
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos con esa cantidad de atributos.");
+        }
+    }
+    // Filtrar por tipo de contacto
+    public void filtrarPorTipoContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Ingrese el tipo de contacto (Persona/Empresa): ");
+        String tipo = sc.nextLine().trim().toLowerCase();
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            if (c.getTipo().toLowerCase().equals(tipo)) {
+                c.imprimirDetalles();
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos de ese tipo.");
         }
     }
 }
