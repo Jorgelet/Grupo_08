@@ -4,58 +4,37 @@ import java.io.*;
 import java.util.Scanner;
 
 public class PersistenciaContactos {
-    private static final String ARCHIVO_CONTACTOS = "contactos.txt";
+    private static final String ARCHIVO_CONTACTOS = System.getProperty("user.dir") + File.separator + "contactos.txt";
 
-    // Guardar todos los contactos en el archivo
     public static void guardarContactos(ListaCircularDoble<Contacto> contactos) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ARCHIVO_CONTACTOS))) {
-            if (contactos.estaVacia())
-                return;
 
-            var nodo = contactos.getCabeza();
-            do {
-                Contacto c = nodo.dato;
-                // Formato: CONTACTO|tipo|nombre|telefono|direccion
+            for (Contacto c : contactos) {
                 writer.println("CONTACTO|" + c.getTipo() + "|" + c.getNombre() + "|" +
                         c.getNumeroTelefono() + "|" + c.getDireccion());
 
-                // Guardar atributos
-                var atributos = c.getAtributos();
-                if (!atributos.estaVacia()) {
-                    var nodoAtributo = atributos.getCabeza();
-                    do {
-                        Atributo a = nodoAtributo.dato;
-                        writer.println("ATRIBUTO|" + a.getNombre() + "|" + a.getValor());
-                        nodoAtributo = nodoAtributo.siguiente;
-                    } while (nodoAtributo != atributos.getCabeza());
+                for (Atributo a : c.getAtributos()) {
+                    writer.println("ATRIBUTO|" + a.getNombre() + "|" + a.getValor());
                 }
 
-                // Guardar fotos
-                var fotos = c.getFotos();
-                if (!fotos.estaVacia()) {
-                    var nodoFoto = fotos.getCabeza();
-                    do {
-                        Foto f = nodoFoto.dato;
-                        writer.println("FOTO|" + f.getNombreArchivo());
-                        nodoFoto = nodoFoto.siguiente;
-                    } while (nodoFoto != fotos.getCabeza());
+                for (Foto f : c.getFotos()) {
+                    writer.println("FOTO|" + f.getNombreArchivo());
                 }
 
-                writer.println("---"); // Separador entre contactos
-                nodo = nodo.siguiente;
-            } while (nodo != contactos.getCabeza());
+                writer.println("---");
+            }
 
             System.out.println("\033[0;32mContactos guardados exitosamente.\033[0m");
+
         } catch (IOException e) {
             System.out.println("\033[0;31mError al guardar contactos: " + e.getMessage() + "\033[0m");
         }
     }
 
-    // Cargar contactos desde el archivo
     public static void cargarContactos(ListaCircularDoble<Contacto> contactos) {
         File archivo = new File(ARCHIVO_CONTACTOS);
         if (!archivo.exists()) {
-            System.out.println("\033[0;33mNo se encontró archivo de contactos previo.\033[0m");
+            System.out.println("\033[0;33mNo se encontró archivo de contactos, se creará uno nuevo al guardar.\033[0m");
             return;
         }
 
@@ -63,33 +42,45 @@ public class PersistenciaContactos {
             Contacto contactoActual = null;
             int contactosCargados = 0;
 
+            // Leemos el archivo línea por línea hasta el final.
             while (scanner.hasNextLine()) {
-                String linea = scanner.nextLine().trim();
+                String linea = scanner.nextLine();
 
-                if (linea.equals("---") || linea.isEmpty()) {
+                // Ignoramos líneas vacías o los separadores.
+                if (linea.isEmpty() || linea.equals("---")) {
                     continue;
                 }
 
+                // Dividimos la línea por el carácter '|' para obtener los datos.
                 String[] partes = linea.split("\\|");
+                String tipoDato = partes[0];
 
-                switch (partes[0]) {
+                switch (tipoDato) {
                     case "CONTACTO":
-                        if (partes.length >= 5) {
-                            contactoActual = new Contacto(partes[1], partes[2], partes[3], partes[4]);
-                            contactos.agregar(contactoActual);
-                            contactosCargados++;
-                        }
+                        // Creamos un nuevo objeto Contacto.
+                        String tipo = partes[1];
+                        String nombre = partes[2];
+                        String telefono = partes[3];
+                        String direccion = partes[4];
+                        contactoActual = new Contacto(tipo, nombre, telefono, direccion);
+                        contactos.agregar(contactoActual);
+                        contactosCargados++;
                         break;
 
                     case "ATRIBUTO":
-                        if (contactoActual != null && partes.length >= 3) {
-                            contactoActual.agregarAtributo(new Atributo(partes[1], partes[2]));
+                        // Agregamos un atributo al último contacto que creamos.
+                        if (contactoActual != null) {
+                            String nombreAtributo = partes[1];
+                            String valorAtributo = partes[2];
+                            contactoActual.agregarAtributo(new Atributo(nombreAtributo, valorAtributo));
                         }
                         break;
 
                     case "FOTO":
-                        if (contactoActual != null && partes.length >= 2) {
-                            contactoActual.agregarFoto(new Foto(partes[1]));
+                        // Agregamos una foto al último contacto que creamos.
+                        if (contactoActual != null) {
+                            String nombreFoto = partes[1];
+                            contactoActual.agregarFoto(new Foto(nombreFoto));
                         }
                         break;
                 }
@@ -97,8 +88,6 @@ public class PersistenciaContactos {
 
             if (contactosCargados > 0) {
                 System.out.println("\033[0;32m" + contactosCargados + " contactos cargados exitosamente.\033[0m");
-            } else {
-                System.out.println("\033[0;33mNo se encontraron contactos en el archivo.\033[0m");
             }
 
         } catch (IOException e) {

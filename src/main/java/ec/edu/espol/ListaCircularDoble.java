@@ -1,6 +1,9 @@
 package ec.edu.espol;
 
-public class ListaCircularDoble<T> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class ListaCircularDoble<T> implements Iterable<T> {
 
     private Nodo<T> cabeza;
     private Nodo<T> nodoActual; // Nodo actual para iteración
@@ -112,5 +115,30 @@ public class ListaCircularDoble<T> {
             actual = actual.siguiente;
         } while (actual != cabeza);
         return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private Nodo<T> actual = cabeza;
+            private int visitados = 0;
+            private boolean puedeEmpezar = tamaño > 0;
+
+            @Override
+            public boolean hasNext() {
+                return puedeEmpezar && visitados < tamaño;
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("No hay más elementos en la lista");
+                }
+                T dato = actual.dato;
+                actual = actual.siguiente;
+                visitados++;
+                return dato;
+            }
+        };
     }
 }
