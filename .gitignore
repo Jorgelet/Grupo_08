@@ -1,0 +1,16 @@
+# Archivos compilados de Java
+*.class
+
+# Carpetas de salida de compilación (comunes en proyectos con Maven/Gradle)
+/target/
+/build/
+/bin/
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración del IDE
+.idea/
+*.iml
+.vscode/
+

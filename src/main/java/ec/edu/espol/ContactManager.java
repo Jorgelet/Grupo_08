@@ -339,4 +339,193 @@ public class ContactManager {
         contactos = new ListaCircularDoble<>(); // Limpiar lista actual
         PersistenciaContactos.cargarContactos(contactos);
     }
+
+    // Editar un atributo de un contacto
+    public void editarAtributoContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto contacto = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                contacto = c;
+                break;
+            }
+        }
+        if (contacto == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        System.out.print("Nombre del atributo a editar: ");
+        String nombreAtributo = sc.nextLine();
+        boolean encontrado = false;
+        for (Atributo a : contacto.getAtributos()) {
+            if (a.getNombre().equalsIgnoreCase(nombreAtributo)) {
+                System.out.print("Nuevo valor: ");
+                String nuevoValor = sc.nextLine();
+                a.setValor(nuevoValor);
+                System.out.println("Atributo editado con exito.");
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("Atributo no encontrado.");
+        }
+    }
+
+    // Remover un atributo de un contacto
+    public void removerAtributoContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto contacto = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                contacto = c;
+                break;
+            }
+        }
+        if (contacto == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        System.out.print("Nombre del atributo a remover: ");
+        String nombreAtributo = sc.nextLine();
+        Atributo atributoAEliminar = null;
+        for (Atributo a : contacto.getAtributos()) {
+            if (a.getNombre().equalsIgnoreCase(nombreAtributo)) {
+                atributoAEliminar = a;
+                break;
+            }
+        }
+        if (atributoAEliminar != null) {
+            contacto.getAtributos().eliminar(atributoAEliminar);
+            System.out.println("Atributo eliminado con exito.");
+        } else {
+            System.out.println("Atributo no encontrado.");
+        }
+    }
+    // Filtrar por apellido y primer nombre
+    public void filtrarPorNombreApellido(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Ingrese el primer nombre a buscar: ");
+        String primerNombre = sc.nextLine().trim().toLowerCase();
+        System.out.print("Ingrese el apellido a buscar: ");
+        String apellido = sc.nextLine().trim().toLowerCase();
+
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            String[] partes = c.getNombre().trim().toLowerCase().split("\\s+");
+            if (partes.length >= 2) {
+                if (partes[0].equals(primerNombre) && partes[partes.length - 1].equals(apellido)) {
+                    c.imprimirDetalles();
+                    encontrado = true;
+                }
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos con ese nombre y apellido.");
+        }
+    }
+        // Filtrar por cantidad de atributos
+    public void filtrarPorCantidadAtributos(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Ingrese la cantidad de atributos: ");
+        int cantidad = Integer.parseInt(sc.nextLine());
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            if (c.getAtributos().getTamaño() == cantidad) {
+                c.imprimirDetalles();
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos con esa cantidad de atributos.");
+        }
+    }
+    // Filtrar por tipo de contacto
+    public void filtrarPorTipoContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Ingrese el tipo de contacto (Persona/Empresa): ");
+        String tipo = sc.nextLine().trim().toLowerCase();
+        boolean encontrado = false;
+        for (Contacto c : contactos) {
+            if (c.getTipo().toLowerCase().equals(tipo)) {
+                c.imprimirDetalles();
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontraron contactos de ese tipo.");
+        }
+    }
+    // Método para ver las fotos de un contacto
+    public void verFotosDeContacto(Scanner sc) {
+        if (contactos.estaVacia()) {
+            System.out.println("No hay contactos.");
+            return;
+        }
+        System.out.print("Nombre del contacto: ");
+        String nombre = sc.nextLine();
+        Contacto contacto = null;
+        for (Contacto c : contactos) {
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                contacto = c;
+                break;
+            }
+        }
+        if (contacto == null) {
+            System.out.println("Contacto no encontrado.");
+            return;
+        }
+        ListaCircularDoble<Foto> fotos = contacto.getFotos();
+        if (fotos.estaVacia() || fotos.getTamaño() < 2) {
+            System.out.println("El contacto debe tener al menos 2 fotos.");
+            return;
+        }
+
+        ListaCircularDoble.Nodo<Foto> actual = fotos.getCabeza();
+        int opcion;
+        do {
+            System.out.println("\nFoto actual: " + actual.dato.getNombreArchivo());
+            System.out.println("1. Ver foto siguiente");
+            System.out.println("2. Ver foto anterior");
+            System.out.println("0. Salir de la galeria de fotos");
+            System.out.print("Seleccione una opcion: ");
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                opcion = -1;
+            }
+            switch (opcion) {
+                case 1:
+                    actual = actual.siguiente;
+                    break;
+                case 2:
+                    actual = actual.anterior;
+                    break;
+                case 0:
+                    System.out.println("Saliendo de la galeria de fotos.");
+                    break;
+                default:
+                    System.out.println("Opcion invalida.");
+            }
+        } while (opcion != 0);
+    }
 }

@@ -18,8 +18,14 @@ public class Main {
             System.out.println("7. Guardar contactos");
             System.out.println("8. Cargar contactos");
             System.out.println("9. Eliminar un contacto");
-            System.out.println("10. Editar un contacto");
-            System.out.println("11. Ordenar contactos");
+            System.out.println("10. Editar atributo de un contacto");
+            System.out.println("11. Remover atributo de un contacto");
+            System.out.println("12. Editar un contacto");
+            System.out.println("13. Filtrar por nombre y apellido");
+            System.out.println("14. Filtrar por cantidad de atributos");
+            System.out.println("15. Filtrar por tipo de contacto");
+            System.out.println("16. Ver fotos de un contacto");
+            System.out.println("17. Ordenar contactos");
             System.out.println("\n\033[0;31m0. Salir\033[0m");
             System.out.print("Seleccione una opcion: ");
             try {
@@ -35,8 +41,14 @@ public class Main {
                     case 7 -> gestor.guardarContactos();
                     case 8 -> gestor.cargarContactos();
                     case 9 -> gestor.eliminarContacto(sc);
-                    case 10 -> gestor.editarContacto(sc);
-                    case 11 -> gestor.ordenarContactos(sc);
+                    case 10 -> gestor.editarAtributoContacto(sc);
+                    case 11 -> gestor.removerAtributoContacto(sc);
+                    case 12 -> gestor.editarContacto(sc);
+                    case 13 -> gestor.filtrarPorNombreApellido(sc);
+                    case 14 -> gestor.filtrarPorCantidadAtributos(sc);
+                    case 15 -> gestor.filtrarPorTipoContacto(sc);
+                    case 16 -> gestor.verFotosDeContacto(sc);
+                    case 17 -> gestor.ordenarContactos(sc);
                     case 0 -> {
                         // Guardar automáticamente al salir
                         gestor.guardarContactos();
